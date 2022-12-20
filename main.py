@@ -4,7 +4,7 @@ from flask import (Flask, request,
                    render_template)
 
 app = Flask(__name__)  # en este caso __name__ = main.py
-todos = ['TODO 1', 'TODO 2', 'TODO 3']
+todos = ['Comprar cafe', 'Nadar', 'Sacar buenas calificaciones']
 
 
 @app.route('/hello')
