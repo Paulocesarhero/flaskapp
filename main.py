@@ -7,6 +7,16 @@ app = Flask(__name__)  # en este caso __name__ = main.py
 todos = ['Comprar cafe', 'Nadar', 'Sacar buenas calificaciones']
 
 
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html', error=error)
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('500.html', error=error)
+
+
 @app.route('/hello')
 def hello():
     user_ip = request.cookies.get('user_ip')
@@ -26,4 +36,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(port=5000, debug=False)
