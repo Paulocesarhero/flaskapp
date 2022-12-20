@@ -2,8 +2,10 @@ from flask import (Flask, request,
                    make_response,
                    redirect,
                    render_template)
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)  # en este caso __name__ = main.py
+bootstrap = Bootstrap(app)
 todos = ['Comprar cafe', 'Nadar', 'Sacar buenas calificaciones']
 
 
@@ -36,4 +38,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=False)
+    app.run(port=5000, debug=True)
