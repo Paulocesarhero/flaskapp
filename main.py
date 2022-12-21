@@ -1,11 +1,19 @@
 from flask import (Flask, request,
                    make_response,
                    redirect,
-                   render_template)
+                   render_template,
+                   session)
 from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)  # en este caso __name__ = main.py
 bootstrap = Bootstrap(app)
+
+app.config.update(
+    ENV='development',
+    DEBUG=True
+)
+app.config['SECRET_KEY'] = 'SUPER SECRETO'
+
 todos = ['Comprar cafe', 'Nadar', 'Sacar buenas calificaciones']
 
 
@@ -21,7 +29,7 @@ def internal_server_error(error):
 
 @app.route('/hello')
 def hello():
-    user_ip = request.cookies.get('user_ip')
+    user_ip = session.get('user_ip')
     context = {
         'user_ip': user_ip,
         'todos': todos
@@ -33,9 +41,9 @@ def hello():
 def index():
     user_ip = request.remote_addr
     response = make_response(redirect('/hello'))
-    response.set_cookie('user_ip', user_ip)
+    session['user_ip'] = user_ip
     return response
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run()
