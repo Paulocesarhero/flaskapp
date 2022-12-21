@@ -3,27 +3,18 @@ from flask import (Flask, request,
                    redirect,
                    render_template,
                    session, url_for, flash)
-from flask_bootstrap import Bootstrap
-from flask_wtf import FlaskForm
-from wtforms.fields import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
-import unittest
-app = Flask(__name__)  # en este caso __name__ = main.py
-bootstrap = Bootstrap(app)
 
-app.config.update(
-    ENV='development',
-    DEBUG=True
-)
-app.config['SECRET_KEY'] = 'SUPER SECRETO'
+import unittest
+
+from app import create_app
+from app.forms import LoginForm
+
+app = create_app()
 
 todos = ['Comprar cafe', 'Nadar', 'Sacar buenas calificaciones']
 
 
-class LoginForm(FlaskForm):
-    username = StringField('nombre de usuario', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField()
+
 
 @app.cli.command()
 def test():
