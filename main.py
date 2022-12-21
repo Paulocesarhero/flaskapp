@@ -2,7 +2,7 @@ from flask import (Flask, request,
                    make_response,
                    redirect,
                    render_template,
-                   session)
+                   session, url_for)
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, SubmitField
@@ -36,16 +36,22 @@ def internal_server_error(error):
     return render_template('500.html', error=error)
 
 
-@app.route('/hello')
+@app.route('/hello', methods=['GET', 'POST'])
 def hello():
     user_ip = session.get('user_ip')
     login_form = LoginForm()
+    username = session.get('username')
 
     context = {
         'user_ip': user_ip,
         'todos': todos,
+        'username': username,
         'login_form': login_form
     }
+    if login_form.validate_on_submit():
+        username = login_form.username.data
+        session['username'] = username
+        return redirect(url_for('index'))
     return render_template('hello.html', **context)
 
 
