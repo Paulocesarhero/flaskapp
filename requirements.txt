@@ -10,3 +10,4 @@ flask-wtf
 flask-testing
 blinker
 WTForms~=3.0.1
+firebase-admin
