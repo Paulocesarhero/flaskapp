@@ -2,6 +2,7 @@ from urllib.parse import urlparse, urljoin
 
 from flask_testing import TestCase
 from flask import current_app, url_for
+from app.firestore_service import db
 
 from main import app
 
@@ -54,6 +55,23 @@ class MainTest(TestCase):
         }
         response = self.client.post(url_for('auth.login'), data=fake_form)
         self.assertRedirects(response, url_for('index'))
+
+    def test_auth_signup_get(self):
+        response = self.client.get(url_for('auth.signup'))
+
+        self.assert200(response)
+
+    def test_auth_signup_post(self):
+        try:
+            fake_form = {
+                'username': 'test_user1',
+                'password': '123456'
+            }
+            response = self.client.post(url_for('auth.signup'), data=fake_form)
+            self.assertRedirects(response, url_for('hello'))
+        finally:
+            # Remove added db
+            db.collection('users').document(fake_form['username']).delete()
     def assertRedirects(self, response, location, message=None):
         """
         Checks if response is an HTTP redirect to the
